@@ -1,11 +1,23 @@
 import type { LatLngExpression, LeafletMouseEvent } from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 
 interface MapComponentProps {
     lat: number
     lng: number
     onMapClick: (lat: number, lng: number) => void
 }
+
+const RecenterMap = ({ lat, lng }: { lat: number; lng: number }) => {
+    const map = useMap()
+
+    useEffect(() => {
+        if (map) {
+            map.setView([lat, lng, map.getZoom()]);
+        }
+    }, [lat, lng, map]);
+    return null;
+};
 
 const MapClickHandler = ({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) => {
     useMapEvents({
@@ -38,6 +50,7 @@ const MapComponent = ({ lat, lng, onMapClick }: MapComponentProps) => {
                     </Popup>
             </Marker>
             <MapClickHandler onMapClick={onMapClick} />
+            <RecenterMap lat={lat} lng={lng} />
         </MapContainer>
   );
 };
