@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="grid grid-cols-1 gap-2 md:grid-cols-3 h-screen w-screen flex-col items-center justify-center min-h-screen bg-gray-250">
       {/* <h1 className="text-4xl font-bold text-blue-600">Map Coordinate Viewer</h1> */}
-      <div className="h-full rounded-lg md:col-span-1">
+      <div className="h-full rounded-lg md:col-span-1 overflow-y-auto">
         <CoordinateInput
           onGo={handleCoordChange}
           latitude={coords.lat}
