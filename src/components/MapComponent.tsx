@@ -8,7 +8,7 @@ interface MapComponentProps {
     onMapClick: (lat: number, lng: number) => void
 }
 
-const RecenterMap = ({ lat, lng }: { lat: number; lng: number }) => {
+const MapController = ({ lat, lng, onMapClick }: MapComponentProps) => {
     const map = useMap()
 
     useEffect(() => {
@@ -16,16 +16,14 @@ const RecenterMap = ({ lat, lng }: { lat: number; lng: number }) => {
             map.setView([lat, lng, map.getZoom()]);
         }
     }, [lat, lng, map]);
-    return null;
-};
 
-const MapClickHandler = ({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) => {
     useMapEvents({
         click(e: LeafletMouseEvent) {
             console.log("Map clicked at:", e.latlng);
             onMapClick(e.latlng.lat, e.latlng.lng)
         },
     })
+
     return null
 }
 
@@ -49,8 +47,7 @@ const MapComponent = ({ lat, lng, onMapClick }: MapComponentProps) => {
                     <p>Longitude: { lng.toFixed(4)} </p>
                     </Popup>
             </Marker>
-            <MapClickHandler onMapClick={onMapClick} />
-            <RecenterMap lat={lat} lng={lng} />
+            <MapController lat={lat} lng={lng} onMapClick={onMapClick} />
         </MapContainer>
   );
 };

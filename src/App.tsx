@@ -8,11 +8,7 @@ type Coordinates = {
 }
 
 function App() {
-  const initialCoordinates: Coordinates = {
-    lat: 38.9072,
-    lng: -77.0369
-  }
-
+  const initialCoordinates: Coordinates = { lat: 38.9072, lng: -77.0369 }
   const [coords, setCoords] = useState<Coordinates>(initialCoordinates)
   const handleCoordChange = (lat:number, lng: number) => {
     setCoords({lat, lng})
