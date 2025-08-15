@@ -9,20 +9,32 @@ interface CoordinateInputProp {
 const CoordinateInput = ({ onGo, latitude, longitude }: CoordinateInputProp) => {
     const [lat, setLat] = useState(latitude.toString())
     const [lng, setLng] = useState(longitude.toString())
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         setLat(latitude.toString())
         setLng(longitude.toString())
     }, [latitude, longitude])
 
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        setter: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+        if (error) {
+            setError(null)
+        }
+        setter(e.target.value)
+    }
+
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault()
         const latNum = parseFloat(lat)
         const lngNum = parseFloat(lng)
         if (!isNaN(latNum) && !isNaN(lngNum)) {
+            setError(null)
             onGo(latNum, lngNum)
         } else {
-            alert("Pleas enter Valid Coordinates")
+            setError("Pleas enter Valid Coordinates")
         }
     }
 
@@ -36,22 +48,23 @@ const CoordinateInput = ({ onGo, latitude, longitude }: CoordinateInputProp) => 
                         id="latitude"
                         type="text"
                         value={lat}
-                        onChange={(e) => setLat(e.target.value)}
+                        onChange={(e) => handleInputChange(e, setLat)}
                         className='px-2 py-1 border border-gray-300 rounded-md'
                         placeholder="e.g, 48.123 "
                     />
                 </div>
                 <div className="flex flex-col">
-                    <label htmlFor="longitude" className="mb-1 font-semi-bold text-gray-700">Latitude</label>
+                    <label htmlFor="longitude" className="mb-1 font-semi-bold text-gray-700">Longitude</label>
                     <input
                         id="longitude"
                         type="text"
                         value={lng}
-                        onChange={(e) => setLng(e.target.value)}
+                        onChange={(e) => handleInputChange(e, setLng)}
                         className='px-2 py-1 border border-gray-300 rounded-md'
                         placeholder="e.g, 12.123 "
                     />
                 </div>
+                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 <button type="submit" className="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
                     Go to Coordinates
                 </button>
